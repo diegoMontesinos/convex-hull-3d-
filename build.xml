@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+
+<project name="convex-hull-3d" default="run" basedir=".">
+
+  <description>
+    Implementaciones de algunos algoritmos para calcular el cierre convexo
+    de un conjunto de puntos en tercera dimensión.
+
+    Cada uno de los algoritmos incluye una visualización interactiva, así como
+    salidas para impresión 3D y una aproximación al problema de desdoblamiento
+    de poliedros convexos.
+
+    Se busca que con estas visualizaciones sirvan para un buen entendimiento
+    de su estudio, es decir, con fines educativos.
+
+    Los algoritmos implementados son:
+    - Incremental
+    - Gift Wrapping
+    - Divide y vencerás
+
+    Diego Montesinos [diegomontesinos@ciencias.unam.mx]
+    Facultad de Ciencias, UNAM.
+  </description>
+
+  <!-- Global properties -->
+  <property name="src"        location="src" />
+  <property name="lib"        location="lib" />
+  <property name="build"      location="bin" />
+  <property name="processing" location="/Applications/processing-3.0.1.app/Contents/Java" />
+
+  <!-- OS Check -->
+  <condition property="nativeOpenGL" value="windows-amd64">
+    <os family="windows"/>
+  </condition>
+  <condition property="nativeOpenGL" value="macosx-universal">
+    <os family="mac"/>
+  </condition>
+  <condition property="nativeOpenGL" value="linux-amd64">
+    <os family="unix"/>
+  </condition>
+
+  <!-- Define the classpath which include the libs -->
+  <path id="project.class.path">
+
+    <!-- Processing imports -->
+    <pathelement location="${processing}/core/library/core.jar" />
+    <pathelement location="${processing}/core/library/jogl-all.jar" />
+    <pathelement location="${processing}/core/library/gluegen-rt.jar" />
+    <pathelement location="${processing}/core/library/gluegen-rt-natives-${nativeOpenGL}.jar" />
+    <pathelement location="${processing}/core/library/jogl-all-natives-${nativeOpenGL}.jar" />
+
+    <!-- Libs imports -->
+
+    <!-- Build imports -->
+    <pathelement location="${build}" />
+  </path>
+
+  <!-- Clean the project -->
+  <target name="clean" description="clean up" >
+    <delete dir="${build}"/>
+  </target>
+
+  <!-- Create the build structure used by project -->
+  <target name="init">
+    <mkdir dir="${build}"/>
+  </target>
+
+  <!-- Compiles the Java code -->
+  <target name="compile" depends="init" description="compile the source " >
+    <javac srcdir="${src}" destdir="${build}" debug="true" debuglevel="lines,vars,source">
+      <classpath refid="project.class.path" />
+    </javac>
+  </target>
+
+  <!-- Run the project -->
+  <target name="run" depends="compile">
+    <java fork="true" classname="geom.ch3d.Main">
+      <classpath refid="project.class.path" />
+    </java>
+  </target>
+</project>
