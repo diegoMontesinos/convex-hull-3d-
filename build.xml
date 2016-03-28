@@ -23,10 +23,13 @@
   </description>
 
   <!-- Global properties -->
-  <property name="src"        location="src" />
-  <property name="lib"        location="lib" />
-  <property name="build"      location="bin" />
-  <property name="processing" location="/Applications/processing-3.0.1.app/Contents/Java" />
+  <property name="src"         location="src" />
+  <property name="test"        location="test" />
+  <property name="lib"         location="lib" />
+  <property name="build"       location="bin" />
+  <property name="build.test"  location="bin/test" />
+  <property name="test.report" location="report" />
+  <property name="processing"  location="/Applications/processing-3.0.1.app/Contents/Java" />
 
   <!-- OS Check -->
   <condition property="nativeOpenGL" value="windows-amd64">
@@ -40,7 +43,7 @@
   </condition>
 
   <!-- Define the classpath which include the libs -->
-  <path id="project.class.path">
+  <path id="project.classpath">
 
     <!-- Processing imports -->
     <pathelement location="${processing}/core/library/core.jar" />
@@ -50,32 +53,57 @@
     <pathelement location="${processing}/core/library/jogl-all-natives-${nativeOpenGL}.jar" />
 
     <!-- Libs imports -->
+    <pathelement location="${lib}/junit-4.12.jar" />
+    <pathelement location="${lib}/hamcrest-core-1.3.jar" />
 
     <!-- Build imports -->
     <pathelement location="${build}" />
+    <pathelement location="${build.test}"/>
   </path>
 
   <!-- Clean the project -->
   <target name="clean" description="clean up" >
     <delete dir="${build}"/>
+    <delete dir="${test.report}" />
   </target>
 
   <!-- Create the build structure used by project -->
   <target name="init">
     <mkdir dir="${build}"/>
+    <mkdir dir="${build.test}" />
   </target>
 
   <!-- Compiles the Java code -->
   <target name="compile" depends="init" description="compile the source " >
     <javac srcdir="${src}" destdir="${build}" debug="true" debuglevel="lines,vars,source">
-      <classpath refid="project.class.path" />
+      <classpath refid="project.classpath" />
+    </javac>
+
+    <javac srcdir="${test}" destdir="${build.test}" debug="true" debuglevel="lines,vars,source">
+      <classpath refid="project.classpath" />
     </javac>
   </target>
 
   <!-- Run the project -->
   <target name="run" depends="compile">
     <java fork="true" classname="geom.ch3d.Main">
-      <classpath refid="project.class.path" />
+      <classpath refid="project.classpath" />
     </java>
+  </target>
+
+  <!-- Run the JUnit Tests. Output as plain text -->
+  <target name="test" depends="compile">
+
+    <!-- Create the report directory -->
+    <mkdir dir="${test.report}" />
+    <junit>
+      <classpath refid="project.classpath" />
+      <formatter type="brief" usefile="false" />
+
+      <!-- Vector -->
+      <test name="geom.math.test.VectorTest" fork="true" todir="${test.report}">
+        <formatter type="plain"/>
+      </test>
+    </junit>
   </target>
 </project>
