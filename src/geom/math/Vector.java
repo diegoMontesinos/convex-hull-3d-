@@ -129,7 +129,7 @@ public class Vector {
    * (hace al vector unitario).
    */
   public void normalize() {
-    double mag = mag();
+    double mag = this.mag();
     if(mag != 0.0f) {
       double lenInv = 1.0f / mag;
 
