@@ -24,6 +24,9 @@ public class Dcel3d {
   public TreeMap<String, HalfEdge3d> halfEdges;
   public TreeMap<String, Face3d> faces;
 
+  // Contador para el id de la cara
+  private int nextFaceLabel;
+
   /**
    * Construye una DCEL vacía.
    * Inicia los registros de caras, aristas y vertices vacios.
@@ -35,6 +38,9 @@ public class Dcel3d {
     this.vertices  = new TreeMap<String, Vertex3d>();
     this.halfEdges = new TreeMap<String, HalfEdge3d>();
     this.faces     = new TreeMap<String, Face3d>();
+
+    // Comienza el contador de ids para caras
+    this.nextFaceLabel = 1;
   }
 
   /**
@@ -50,6 +56,9 @@ public class Dcel3d {
     this.vertices = vertices;
     this.halfEdges = halfEdges;
     this.faces = faces;
+
+    // Comienza el contador de ids para caras
+    this.nextFaceLabel = this.faces.size() + 1;
   }
 
   /**
@@ -60,6 +69,8 @@ public class Dcel3d {
   public void addFace(Face3d face) {
     if (!this.faces.containsKey(face.getLabel())) {
       this.faces.put(face.getLabel(), face);
+
+      this.nextFaceLabel++;
     }
   }
 
@@ -113,6 +124,15 @@ public class Dcel3d {
    */
   public Vertex3d deleteVertex(Vertex3d vertex) {
     return this.vertices.remove(vertex.getLabel());
+  }
+
+  /**
+   * Regresa la próxima etiqueta para una nueva cara.
+   * 
+   * @return La nueva etiqueta para una nueva cara
+   */
+  public String getNextFaceLabel() {
+    return "" + nextFaceLabel;
   }
 
   /**
