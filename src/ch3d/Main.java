@@ -1,4 +1,7 @@
-package geom.ch3d;
+package ch3d;
+
+import ch3d.gw.GWApp;
+import processing.core.PApplet;
 
 /**
  * Clase principal.
@@ -15,7 +18,9 @@ public class Main {
    * @param args - Argumentos de la línea de comandos
    */
   public static void main(String[] args) {
+    GWApp app = new GWApp(45, -100, 100);
 
-    System.out.println("Hola Mundo");
+    String[] appletArgs = { "" };
+    PApplet.runSketch(appletArgs, app);
   }
 }
