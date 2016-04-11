@@ -130,7 +130,7 @@ public class Vector {
    */
   public void normalize() {
     double mag = this.mag();
-    if(mag != 0.0f) {
+    if (mag != 0.0f) {
       double lenInv = 1.0f / mag;
 
       this.x *= lenInv;
@@ -250,8 +250,12 @@ public class Vector {
 
   @Override
   public boolean equals(Object obj) {
-    Vector vec = (Vector) obj;
-    return this.x == vec.x && this.y == vec.y && this.z == vec.z;
+    if (obj instanceof Vector) {
+      Vector vec = (Vector) obj;
+      return this.x == vec.x && this.y == vec.y && this.z == vec.z;
+    }
+    
+    return false;
   }
 
   @Override
