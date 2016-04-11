@@ -1,5 +1,7 @@
 package geom.structures.dcel3d;
 
+import java.util.LinkedList;
+
 /**
  * Cara de una DCEL de tres dimensiones.
  *
@@ -39,6 +41,29 @@ public class Face3d {
    */
   public String getLabel() {
     return this.label;
+  }
+
+  /**
+   * Regresa el componente externo de la cara como un arreglo.
+   *
+   * @return HalfEdge3d[] El componente externo en un arreglo.
+   */
+  public HalfEdge3d[] getComponent() {
+
+    // Creamos una lista para ir agregando
+    LinkedList<HalfEdge3d> component = new LinkedList<HalfEdge3d>();
+
+    // Empezamos en la arista marcada
+    HalfEdge3d he = this.outerComponent;
+    while(true) {
+      component.add(he);
+      he = he.next;
+      if(he.equals(this.outerComponent))
+        break;
+    }
+
+    // Regresamos como array
+    return component.toArray(new HalfEdge3d[0]);
   }
 
   @Override
