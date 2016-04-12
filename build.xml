@@ -89,6 +89,16 @@
   <target name="run" depends="compile">
     <java fork="true" classname="ch3d.Main">
       <classpath refid="project.classpath" />
+
+      <!-- Arguments -->
+      <arg value="${algorithm}"/>
+      <arg value="${input}"/>
+      <arg value="${n}"/>
+      <arg value="${min}"/>
+      <arg value="${center}"/>
+      <arg value="${max}"/>
+      <arg value="${radius}"/>
+      <arg value="${file}"/>
     </java>
   </target>
 
