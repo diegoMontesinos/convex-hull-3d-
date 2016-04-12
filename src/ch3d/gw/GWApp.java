@@ -19,14 +19,14 @@ public class GWApp extends PApplet {
   private PeasyCam camera;
   private boolean toggleAxis;
   private boolean toggleInput;
+  private boolean toggleWireframe;
 
-  public GWApp(int nPoints, double start, double end) {
+  public GWApp(Vector[] input) {
 
-    // Creamos la entrada para el algoritmo
-    Vector min = new Vector(start, start, start);
-    Vector max = new Vector(end, end, end);
-    this.input = VectorUtils.randomPointsInBox(nPoints, min, max, false);
+    // Guardamos la entrada del algoritmo
+    this.input = input;
 
+    // Lo ejecutamos
     this.convexHull = GiftWrapping.run(this.input);
   }
 
@@ -48,11 +48,13 @@ public class GWApp extends PApplet {
     
     toggleAxis  = true;
     toggleInput = true;
+    toggleWireframe = true;
   }
 
   @Override
   public void draw() {
     background(255);
+    lights();
 
     // Ejes
     if (toggleAxis) axis3D();
@@ -61,8 +63,12 @@ public class GWApp extends PApplet {
     if (toggleInput) renderInput();
 
     // Convex Hull
-    strokeWeight(1.0f);
-    this.convexHull.draw(g, -1, color(255, 0, 0));
+    strokeWeight(1.3f);
+    if (toggleWireframe) {
+      this.convexHull.draw(g, color(50, 50, 50), color(238, 5, 255));
+    } else {
+      this.convexHull.draw(g, -1, color(238, 5, 255));
+    }
   }
 
   private void axis3D() {
@@ -105,6 +111,11 @@ public class GWApp extends PApplet {
       // E
       case 69:
         toggleAxis = !toggleAxis;
+        break;
+
+      // W
+      case 87:
+        toggleWireframe = !toggleWireframe;
         break;
     }
   }
