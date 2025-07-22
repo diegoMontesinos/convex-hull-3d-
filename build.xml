@@ -29,16 +29,16 @@
   <property name="build"       location="bin" />
   <property name="build.test"  location="bin/test" />
   <property name="test.report" location="report" />
-  <property name="processing"  location="/Applications/processing-3.0.1.app/Contents/Java" />
+  <property name="processing"  location="/Applications/Processing.app/Contents/app/resources" />
 
   <!-- OS Check -->
-  <condition property="nativeOpenGL" value="windows-amd64">
+  <condition property="osVersion" value="windows-amd64">
     <os family="windows"/>
   </condition>
-  <condition property="nativeOpenGL" value="macosx-universal">
+  <condition property="osVersion" value="macosx-universal">
     <os family="mac"/>
   </condition>
-  <condition property="nativeOpenGL" value="linux-amd64">
+  <condition property="osVersion" value="linux-amd64">
     <os family="unix"/>
   </condition>
 
@@ -46,11 +46,13 @@
   <path id="project.classpath">
 
     <!-- Processing imports -->
-    <pathelement location="${processing}/core/library/core.jar" />
-    <pathelement location="${processing}/core/library/jogl-all.jar" />
-    <pathelement location="${processing}/core/library/gluegen-rt.jar" />
-    <pathelement location="${processing}/core/library/gluegen-rt-natives-${nativeOpenGL}.jar" />
-    <pathelement location="${processing}/core/library/jogl-all-natives-${nativeOpenGL}.jar" />
+    <pathelement location="${processing}/core/library/core-4.4.4.jar" />
+    <pathelement location="${processing}/core/library/jogl-all-2.5.0.jar" />
+    <pathelement location="${processing}/core/library/jogl-all-main-2.5.0.jar" />
+    <pathelement location="${processing}/core/library/jogl-all-2.5.0-natives-${osVersion}.jar" />
+    <pathelement location="${processing}/core/library/gluegen-rt-2.5.0.jar" />
+    <pathelement location="${processing}/core/library/gluegen-rt-main-2.5.0.jar" />
+    <pathelement location="${processing}/core/library/gluegen-rt-2.5.0-natives-${osVersion}.jar" />
 
     <!-- Libs imports -->
     <pathelement location="${lib}/peasycam.jar" />
@@ -76,11 +78,11 @@
 
   <!-- Compiles the Java code -->
   <target name="compile" depends="init" description="compile the source " >
-    <javac srcdir="${src}" destdir="${build}" debug="true" debuglevel="lines,vars,source">
+    <javac srcdir="${src}" destdir="${build}" debug="true" debuglevel="lines,vars,source" includeantruntime="false">
       <classpath refid="project.classpath" />
     </javac>
 
-    <javac srcdir="${test}" destdir="${build.test}" debug="true" debuglevel="lines,vars,source">
+    <javac srcdir="${test}" destdir="${build.test}" debug="true" debuglevel="lines,vars,source" includeantruntime="false">
       <classpath refid="project.classpath" />
     </javac>
   </target>
